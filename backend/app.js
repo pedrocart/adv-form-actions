@@ -85,6 +85,9 @@ app.post('/opinions', async (req, res) => {
 app.post('/opinions/:id/upvote', async (req, res) => {
   const { id } = req.params;
   await new Promise((resolve) => setTimeout(resolve, 1000));
+  // Simulate a delay to mimic real-world scenarios
+  // If you want to simulate an error, you can uncomment the next line:
+  // return res.status(500).end();
   try {
     const opinion = await upvoteOpinion(Number(id));
     if (!opinion) {
