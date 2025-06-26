@@ -1,6 +1,13 @@
 {
   "opinions": [
     {
+      "id": 1750939760949,
+      "votes": 0,
+      "userName": "Pedro Henrique",
+      "title": "React is Great!",
+      "body": "I really like it a lot!!"
+    },
+    {
       "id": 1,
       "userName": "Maximilian Schwarzmüller",
       "title": "Do yourself a favor and learn React!",

@@ -1,11 +1,15 @@
-import { useActionState } from "react";
+import { useActionState, use } from "react";
+
+import { OpinionsContext } from "../store/opinions-context";
 
 export function NewOpinion() {
+  const { addOpinion } = use(OpinionsContext);
+
   const [formState, formAction] = useActionState(shareOpinionAction, {
     errors: null,
   });
 
-  function shareOpinionAction(prevFormState, formData) {
+  async function shareOpinionAction(prevFormState, formData) {
     const userName = formData.get("userName");
     const title = formData.get("title");
     const body = formData.get("body");
@@ -13,16 +17,16 @@ export function NewOpinion() {
     // Perform validation
     let errors = [];
 
-    if (!userName || userName.trim() === "") {
-      errors.push("Username is not valid.");
+    if (title.trim().length < 5) {
+      errors.push("Title must be at least 5 characters long.");
     }
 
-    if (!title || title.trim() === "") {
-      errors.push("Title is not valid.");
+    if (body.trim().length < 10 || body.trim().length > 300) {
+      errors.push("Opinion must be between 10 and 300 characters long.");
     }
 
-    if (!body || body.trim() === "") {
-      errors.push("Opinion can not be blank.");
+    if (!userName.trim()) {
+      errors.push("Please enter your name.");
     }
 
     // If there are errors, return them
@@ -37,6 +41,9 @@ export function NewOpinion() {
       };
     }
 
+    // Submit the Form if no errors
+    await addOpinion({ title, body, userName }); // To only clear the form after successful submission
+    // Reset the form state
     return { errors: null };
   }
 
@@ -76,7 +83,7 @@ export function NewOpinion() {
         </p>
 
         {formState.errors && (
-          <ul className="error">
+          <ul className="errors">
             {formState.errors.map((error) => (
               <li key={error}>{error}</li>
             ))}
